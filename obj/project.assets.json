@@ -12224,11 +12224,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\OnBoarding\\OnBoarding\\OnBoarding.csproj",
+      "projectUniqueName": "D:\\Resolute\\OnBoarding\\OnBoarding.csproj",
       "projectName": "OnBoarding",
-      "projectPath": "D:\\OnBoarding\\OnBoarding\\OnBoarding.csproj",
+      "projectPath": "D:\\Resolute\\OnBoarding\\OnBoarding.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\OnBoarding\\OnBoarding\\obj\\",
+      "outputPath": "D:\\Resolute\\OnBoarding\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
