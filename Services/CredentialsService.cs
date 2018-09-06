@@ -30,11 +30,16 @@ namespace OnBoarding.Services
         }
         public Customer GetAllCustomer(string Customer_name, string Email)
         {
-            return _context.Customer.Where(
+            //return _context.Customer.Where(
+            //     element => element.Customer_name == Customer_name
+            //    || element.Email == Email
+            //    ).ToList()[0];
 
-                element => element.Customer_name == Customer_name
-                || element.Email == Email
-                ).ToList()[0];
+            Customer temp;
+           
+           return temp = _context.Customer.Where(element => element.Customer_name == (Customer_name == null ? element.Customer_name : Customer_name)
+                     && element.Email == (Email == null ? element.Email : Email)).ToList()[0];
+
         }
     }
 }

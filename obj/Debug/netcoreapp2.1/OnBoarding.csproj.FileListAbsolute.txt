@@ -58,7 +58,6 @@ D:\Resolute\OnBoarding\bin\Debug\netcoreapp2.1\OnBoarding.runtimeconfig.json
 D:\Resolute\OnBoarding\bin\Debug\netcoreapp2.1\OnBoarding.runtimeconfig.dev.json
 D:\Resolute\OnBoarding\bin\Debug\netcoreapp2.1\OnBoarding.dll
 D:\Resolute\OnBoarding\bin\Debug\netcoreapp2.1\OnBoarding.pdb
-D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.csprojAssemblyReference.cache
 D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.csproj.CoreCompileInputs.cache
 D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.RazorAssemblyInfo.cache
 D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.RazorAssemblyInfo.cs
@@ -67,3 +66,4 @@ D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.AssemblyInfo.cs
 D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.RazorTargetAssemblyInfo.cache
 D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.dll
 D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.pdb
+D:\Resolute\OnBoarding\obj\Debug\netcoreapp2.1\OnBoarding.csprojAssemblyReference.cache

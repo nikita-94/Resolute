@@ -16,18 +16,18 @@ namespace OnBoarding.Controllers
     [ApiController]
     public class EndUsersController : ControllerBase
     {
-        private readonly OnBoardingContext _context;
+      
+        private readonly IUserService _service;
 
-        public EndUsersController(OnBoardingContext context)
+        public EndUsersController(IUserService service)
         {
-            _context = context;
+            _service = service;
         }
-
         // GET: api/EndUsers
         [HttpGet]
         public IEnumerable<EndUser> GetEndUser()
         {
-            return _context.EndUser.Include(x=>x.SocialId).Include(x=>x.Organization);
+            return _service.GetEndUser();
         }
 
         // GET: api/EndUsers/5
@@ -39,93 +39,34 @@ namespace OnBoarding.Controllers
                 return BadRequest(ModelState);
             }
 
-            var endUser = await _context.EndUser.FindAsync(id);
-
-            if (endUser == null)
-            {
-                return NotFound();
-            }
-
+            var endUser = await _service.GetEndUser(id);
             return Ok(endUser);
         }
 
 
         // POST: api/EndUsers
         [HttpPost]
-        public async Task<IActionResult> PostEndUser()
+        public async Task<IActionResult> PostEndUser([FromBody] Customer customer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            return await ExtractData();
+            return await ExtractDataEndUser(customer);
         }
-
-        public async Task<IActionResult> ExtractData()
+        [HttpGet("query")]
+        public async Task<IActionResult> GetEndUserByQuery([FromQuery(Name = "Name")] string Name, [FromQuery(Name = "Email")] string Email, [FromQuery(Name = "Phone_no")] string Phone_no)
         {
-            string filePathCSV = @"D:\Project\onboarding\OnBoarding\wwwroot\Upload\EndUser.csv";
-            Task<string> fileData = ReadFileAsync(filePathCSV);
-            await fileData;
-            string[] contents = fileData.Result.Split('\n');
-            int countOfSocialIds = Regex.Matches(contents[0], "/Source").Count;
-            string[] header = contents[0].Split(',');
-            for (int i = 0; i < header.Length; i++)
-            {
-                header[i] = header[i].Replace("\r", string.Empty).Trim('\"');
-            }
-            int indexOfName = Array.IndexOf(header, "Name");
-            int indexOfEmail = Array.IndexOf(header, "Email");
-            int indexOfPhoneNumber = Array.IndexOf(header, "PhoneNumber");
-            int indexOfProfileImage = Array.IndexOf(header, "ProfileImgUrl");
-            int[] indexOfSocialAccountSource = new int[countOfSocialIds];
-            int[] indexOfSocialAccountIdentifier = new int[countOfSocialIds];
-            for (int i=0;i<countOfSocialIds;i++)
-            {
-                indexOfSocialAccountSource[i]= Array.IndexOf(header, $"SocialId/{i}/Source");
-                indexOfSocialAccountIdentifier[i] = Array.IndexOf(header, $"SocialId/{i}/Identifier");
-            }
-            int indexOfOrganizationName = Array.IndexOf(header, "Organization/CustomerName");
-            int indexOfOrganizationEmail = Array.IndexOf(header, "Organization/Email");
-            int indexOfOrganizationPwd = Array.IndexOf(header, "Organization/Password");
-            int indexOfOrganizationLogo = Array.IndexOf(header, "Organization/LogoUrl");
-
-            for (int i = 1; i <= contents.Count() - 1; i++)
-            {
-                string[] info = contents[i].Split(',');
-
-                EndUser agent = new EndUser
-                {
-                    Name = info[indexOfName].Trim('\"'),
-                    Email = info[indexOfEmail].Trim('\"'),
-                    Phone_no = info[indexOfPhoneNumber].Trim('\"'),
-                    Profile_img_url = info[indexOfProfileImage].Trim('\"'),
-                    SocialId = new List<UserSocialId>(),
-                    Organization = _context.Customer.FirstOrDefault(x => x.Customer_name == info[indexOfOrganizationName].Trim('\"')) ?? new Customer
-                    {
-                        Customer_name = info[indexOfOrganizationName].Trim('\"'),
-                        Email = info[indexOfOrganizationEmail].Trim('\"'),
-                        Password = info[indexOfOrganizationPwd].Trim('\"'),
-                        Logo_url = info[indexOfOrganizationLogo].Replace("\r", string.Empty).Trim('\"')
-                    }
-
-                };
-
-                for (int j = 0; j < countOfSocialIds; j++)
-                {
-                    if (info[indexOfSocialAccountSource[j]].Trim('\"') != string.Empty && info[indexOfSocialAccountIdentifier[j]].Trim('\"') != string.Empty)
-                    {
-                        agent.SocialId.Add(new UserSocialId { Source = info[indexOfSocialAccountSource[j]].Trim('\"'), Identifier = info[indexOfSocialAccountIdentifier[j]].Trim('\"') });
-                    }
-                }
-        
-                _context.EndUser.Add(agent);
-                await _context.SaveChangesAsync();
-
-            }
+            var result = _service.GetAllEndUser(Name, Email, Phone_no);
+            return Ok(result);
+        }
+        public async Task<IActionResult> ExtractDataEndUser(Customer customer)
+        {
+            await _service.ExtractDataEndUser(customer);
             return Ok();
         }
-        public static async Task<string> ReadFileAsync(string filepath)
+        public static async Task<string> ReadFileEndUserAsync(string filepath)
         {
             string fileData = "";
             using (StreamReader streamReader = new StreamReader(filepath))
